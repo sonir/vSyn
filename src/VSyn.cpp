@@ -187,8 +187,6 @@ void VSyn::initShapes(int max_num){
         pC->phase = 0.0f;
         pC->thick = 0.0f;
         
-        pC->direction = 1;
-
         pC->fill = false;
 
         
@@ -237,7 +235,7 @@ void VSyn::draw(){
                 break;
 
             case ARC:
-                arc(elm->x1, elm->y1, elm->x2, elm->y2, elm->height, elm->direction, elm->thick);
+                arc(elm->x1, elm->y1, elm->x2, elm->y2, elm->height, elm->thick);
                 break;
 
             case WAVE:

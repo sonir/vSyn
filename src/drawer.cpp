@@ -8,6 +8,7 @@
 
 #include "drawer.hpp"
 
+
 void circle(float x, float y, float size, int fill) {
     int width = ofGetWidth();
     int height = ofGetHeight();
@@ -117,8 +118,7 @@ void line(float x1, float y1, float x2, float y2, float thick) {
     ofDrawLine(width * x1, height * y1, width * x2, height * y2);
 }
 
-
-void arc(float x1, float y1, float x2, float y2, float arcHeight, int direction, float thick) {
+void arc(float x1, float y1, float x2, float y2, float arcHeight,  float thick) {
     int width = ofGetWidth();
     int height = ofGetHeight();
     
@@ -140,12 +140,11 @@ void arc(float x1, float y1, float x2, float y2, float arcHeight, int direction,
     
     for (int i = 0; i < division; i++) {
         currentPointOnLine = line * i / division + start;
-        currentPos = currentPointOnLine + line.getNormalized().rotate(90 * direction) * sin(i/division * PI) * width * arcHeight;
+        currentPos = currentPointOnLine + line.getNormalized().rotate(-90) * sin(i/division * PI) * width * arcHeight;
         ofDrawLine(previousPos, currentPos);
         previousPos = currentPos;
     }
 }
-
 
 void wave(float x1, float y1, float x2, float y2, float freq, float amplitude, float phase, float thick) {
     int width = ofGetWidth();
