@@ -110,15 +110,16 @@ void VSyn::update(){
         } else if(m.getAddress() == "/arc"){
             
             int uid =  m.getArgAsInt32(0);
-            float x = m.getArgAsFloat(1);
-            float y = m.getArgAsFloat(2);
-            float height = m.getArgAsFloat(3);
-            int direction = m.getArgAsInt32(4);
-            float thick = m.getArgAsFloat(5);
+            float x1 = m.getArgAsFloat(1);
+            float y1 = m.getArgAsFloat(2);
+            float x2 = m.getArgAsFloat(3);
+            float y2 = m.getArgAsFloat(4);
+            float height = m.getArgAsFloat(5);
+            float thick = m.getArgAsFloat(6);
             
             if(uid < CONTAINER_MAX) // check the index is enable
             {
-                toArc(&shapes[uid] ,uid, x, y, height, direction, thick);
+                toArc(&shapes[uid] ,uid, x1, y1, x2, y2, height, thick);
             }
         } else if(m.getAddress() == "/wave"){
             

@@ -5,10 +5,13 @@
 //
 //
 
+
 #include "drawer.hpp"
 
 void circle(float x, float y, float size, int fill) {
-    ofSetColor(255);
+    int width = ofGetWidth();
+    int height = ofGetHeight();
+    
     if(fill == 1) {
         ofFill();
     } else {
@@ -16,17 +19,21 @@ void circle(float x, float y, float size, int fill) {
         ofSetLineWidth(2.0);
     }
     
-    int radius = size * ofGetWidth();
-    ofDrawCircle(x * ofGetWidth(), y * ofGetHeight(), radius);
+    int radius = size * width;
+    ofDrawCircle(x * width, y * height, radius);
 }
 
 
 void triangle(float x, float y, float size, float angle, int fill) {
+    int width = ofGetWidth();
+    int height = ofGetHeight();
+    
+    //Ready Variables
     ofVec2f center, normalizedTop, normalizedLeft, normalizedRight;
     double root3 = sqrt(3.0);
-    float scaledSize = ofGetWidth() * size;
+    float scaledSize = width * size;
     
-    center.set(x * ofGetWidth(), y * ofGetHeight());
+    center.set(x * width, y * height);
     normalizedTop.set(0, -root3 / 3);
     normalizedLeft.set(-0.5, root3 / 6);
     normalizedRight.set(0.5, root3 / 6);
@@ -36,7 +43,6 @@ void triangle(float x, float y, float size, float angle, int fill) {
     ofVec2f right = normalizedRight * scaledSize;
     
     
-    ofSetColor(255);
     if(fill == 1) {
         ofFill();
     } else {
@@ -55,7 +61,11 @@ void triangle(float x, float y, float size, float angle, int fill) {
 
 
 void square(float x, float y, float size, float angle, int fill) {
-    ofSetColor(255);
+    
+    int width = ofGetWidth();
+    int height = ofGetHeight();
+    
+    //Fill Setting
     if(fill == 1) {
         ofFill();
     } else {
@@ -63,16 +73,20 @@ void square(float x, float y, float size, float angle, int fill) {
         ofSetLineWidth(2.0);
     }
     
+    //Draw
     ofSetRectMode(OF_RECTMODE_CENTER);
     ofPushMatrix();
-    ofTranslate(x * ofGetWidth(), y * ofGetHeight());
+    ofTranslate(x * width, y * height);
     ofRotate(360 * angle);
-    ofDrawRectangle(0, 0, size * ofGetWidth(), size * ofGetWidth());
+    ofDrawRectangle(0, 0, size * width, size * width);
     ofPopMatrix();
 }
 
 void rect(float x1, float y1, float x2, float y2, float angle, int fill) {
-    ofSetColor(255);
+    int width = ofGetWidth();
+    int height = ofGetHeight();
+    
+    //Fill Setting
     if(fill == 1) {
         ofFill();
     } else {
@@ -80,36 +94,43 @@ void rect(float x1, float y1, float x2, float y2, float angle, int fill) {
         ofSetLineWidth(2.0);
     }
     
-    float centerX = ofGetWidth() *(x1 + x2) / 2;
-    float centerY = ofGetHeight() *(y1 + y2) / 2;
-    float width = ofGetWidth() * abs(x1 - x2) ;
-    float height = ofGetHeight() * abs(y1 - y2);
+    //Culcurate Position and Dimension
+    float centerX = width *(x1 + x2) / 2;
+    float centerY = height *(y1 + y2) / 2;
+    float rectWidth = width * abs(x1 - x2) ;
+    float rectHeight = height * abs(y1 - y2);
     
+    //Draw
     ofSetRectMode(OF_RECTMODE_CENTER);
     ofPushMatrix();
     ofTranslate(centerX, centerY);
     ofRotate(360 * angle);
-    ofDrawRectangle(0, 0, width, height);
+    ofDrawRectangle(0, 0, rectWidth, rectHeight);
     ofPopMatrix();
 }
 
 void line(float x1, float y1, float x2, float y2, float thick) {
+    int width = ofGetWidth();
+    int height = ofGetHeight();
+    
     ofSetLineWidth(thick);
-    ofDrawLine(ofGetWidth() * x1, ofGetHeight() * y1, ofGetWidth() * x2, ofGetHeight() * y2);
+    ofDrawLine(width * x1, height * y1, width * x2, height * y2);
 }
 
 
-void arc(float x1, float y1, float x2, float y2, float height, int direction, float thick) {
-    ofSetColor(255);
+void arc(float x1, float y1, float x2, float y2, float arcHeight, int direction, float thick) {
+    int width = ofGetWidth();
+    int height = ofGetHeight();
     
-    //Culcurate Line status
-    ofVec2f start = ofVec2f(x1 * ofGetWidth(), y1 * ofGetHeight());
-    ofVec2f end = ofVec2f(x2 * ofGetWidth(), y2 * ofGetHeight());
+    //Get Line status
+    ofVec2f start = ofVec2f(x1 * width, y1 * height);
+    ofVec2f end = ofVec2f(x2 * width, y2 * height);
     ofVec2f line = end - start;
     
     int length = line.length();
     float angle = line.getNormalized().angle(ofVec2f(1,0));
     
+    //Draw
     float division = 100.0;
     ofSetLineWidth(thick);
     
@@ -119,19 +140,20 @@ void arc(float x1, float y1, float x2, float y2, float height, int direction, fl
     
     for (int i = 0; i < division; i++) {
         currentPointOnLine = line * i / division + start;
-        currentPos = currentPointOnLine + line.getNormalized().rotate(90 * direction) * sin(i/division * PI) *ofGetWidth() * height;
+        currentPos = currentPointOnLine + line.getNormalized().rotate(90 * direction) * sin(i/division * PI) * width * arcHeight;
         ofDrawLine(previousPos, currentPos);
         previousPos = currentPos;
     }
 }
 
 
-void wave(float x1, float y1, float x2, float y2, float freq, float amplitude,float phase, float thick) {
-    ofSetColor(255);
+void wave(float x1, float y1, float x2, float y2, float freq, float amplitude, float phase, float thick) {
+    int width = ofGetWidth();
+    int height = ofGetHeight();
     
     //Culcurate Line status
-    ofVec2f start = ofVec2f(x1 * ofGetWidth(), y1 * ofGetHeight());
-    ofVec2f end = ofVec2f(x2 * ofGetWidth(), y2 * ofGetHeight());
+    ofVec2f start = ofVec2f(x1 * width, y1 * height);
+    ofVec2f end = ofVec2f(x2 * width, y2 * height);
     ofVec2f line = end - start;
     
     int length = line.length();
@@ -140,6 +162,7 @@ void wave(float x1, float y1, float x2, float y2, float freq, float amplitude,fl
     float division = 200.0;
     ofSetLineWidth(thick);
     
+    //Draw
     ofVec2f currentPointOnLine = ofVec2f(0, 0);
     ofVec2f currentPos = ofVec2f(0, 0);
     ofVec2f previousPos = ofVec2f(0, 0);
@@ -147,10 +170,10 @@ void wave(float x1, float y1, float x2, float y2, float freq, float amplitude,fl
     for (int i = 0; i < division; i++) {
         if (i == 0) {
             currentPointOnLine = line * i / division + start;
-            previousPos = currentPointOnLine + line.getNormalized().rotate(90) * sin((i/division * PI * 2 * freq) + (phase * 2 * PI)) * ofGetWidth() * amplitude;
+            previousPos = currentPointOnLine + line.getNormalized().rotate(90) * sin((i/division * PI * 2 * freq) + (phase * 2 * PI)) * width * amplitude;
         }
         currentPointOnLine = line * i / division + start;
-        currentPos = currentPointOnLine + line.getNormalized().rotate(90) * sin((i/division * PI * 2 * freq) + (phase * 2 * PI)) * ofGetWidth() * amplitude;
+        currentPos = currentPointOnLine + line.getNormalized().rotate(90) * sin((i/division * PI * 2 * freq) + (phase * 2 * PI)) * width * amplitude;
         ofDrawLine(previousPos, currentPos);
         previousPos = currentPos;
     }

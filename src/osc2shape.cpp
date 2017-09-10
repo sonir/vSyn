@@ -124,17 +124,18 @@ void toLine(shapeContainer *elm, int uid, float x1, float y1, float x2, float y2
     
 }
 
-void toArc(shapeContainer *elm, int uid, float x, float y, float height, int direction, float thick){
+void toArc(shapeContainer *elm, int uid, float x1, float y1, float x2, float y2, float height, float thick){
 
     //Set System Params
     elm->type = ARC;
     elm->active = true;
     elm->uid = uid;
     //Shape data (position, size etc)
-    elm->x1 = x;
-    elm->y1 = y;
+    elm->x1 = x1;
+    elm->y1 = y1;
+    elm->x2 = x2;
+    elm->y2 = y2;    
     elm->height = height;
-    elm->direction = direction;
     elm->thick = thick;
     
 }

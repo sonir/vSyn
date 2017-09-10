@@ -19,28 +19,7 @@
 #define PORT 57137
 #define NUM_MSG_STRINGS 20
 
-#define CONTAINER_MAX 128
-
-//typedef enum shape_type {CIRCLE, TRIANGLE, SQUARE, RECT, LINE, ARC, WAVE } shape_type;
-//
-//typedef struct shapeContainer {
-//    
-//    shape_type type;
-//    bool active;
-//    int uid;
-//    float x1;
-//    float y1;
-//    float x2;
-//    float y2;
-//    
-//    float size;
-//    float height;
-//    float angle;
-//    bool fill;
-//
-//    
-//    
-//} shapeContainer;
+#define CONTAINER_MAX 128 //Size of Buffer for Shapes
 
 
 class VSyn {

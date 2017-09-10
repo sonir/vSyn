@@ -27,7 +27,7 @@ void toRect(shapeContainer *elm, int uid, float x1, float y1, float x2, float y2
 
 void toLine(shapeContainer *elm, int uid, float x1, float y1, float x2, float y2, float thick);
 
-void toArc(shapeContainer *elm, int uid, float x, float y, float height, int direction, float thick);
+void toArc(shapeContainer *elm, int uid, float x1, float y1, float x2, float y2, float height, float thick);
 
 void toWave(shapeContainer *elm, int uid, float x1, float y1, float x2, float y2, float freq, float amp, float phase, float thick);
 
