@@ -15,7 +15,6 @@
 #include "shape.h"
 #include "osc2shape.hpp"
 #include "drawer.hpp"
-#include "cam_func.hpp"
 
 #define PORT 57137
 #define NUM_MSG_STRINGS 20

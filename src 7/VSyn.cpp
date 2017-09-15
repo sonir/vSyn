@@ -19,8 +19,9 @@ void VSyn::setup(){
     cam_flg = false;
 //    pov.set(0, 0, 4000);
 //    look.set(0, 0, -1);
-    pov.set(POV_INIT_X*ofGetWidth()*(-1), POV_INIT_Y*ofGetHeight(), POV_INIT_Z*ofGetWidth());
-    look.set(LOOK_INIT_X*ofGetWidth()*(-1), LOOK_INIT_Y*ofGetHeight(), LOOK_INIT_Z*ofGetWidth());
+    pov.set(0, 0, 4000);
+    look.set(0, 0, -1);
+
     
     
     cout << "VSyn SETUP" << endl;

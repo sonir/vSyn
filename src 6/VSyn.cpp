@@ -15,14 +15,7 @@ void VSyn::setup(){
     ofBackground(0, 0, 0);
     ofSetCircleResolution(50);
 
-    //CAM SETUP
-    cam_flg = false;
-//    pov.set(0, 0, 4000);
-//    look.set(0, 0, -1);
-    pov.set(POV_INIT_X*ofGetWidth()*(-1), POV_INIT_Y*ofGetHeight(), POV_INIT_Z*ofGetWidth());
-    look.set(LOOK_INIT_X*ofGetWidth()*(-1), LOOK_INIT_Y*ofGetHeight(), LOOK_INIT_Z*ofGetWidth());
-    
-    
+
     cout << "VSyn SETUP" << endl;
     receiver.setup(PORT);    
     current_msg_string = 0;
@@ -155,25 +148,6 @@ void VSyn::update(){
                 toMute(&shapes[uid]);
             }
             
-        } else if(m.getAddress() == "/cam/pov"){
-            
-            pov.x =  ( m.getArgAsFloat(0) * ofGetWidth() * (-1)); //Invert x posi for GL coordinate sys
-            pov.y =  ( m.getArgAsFloat(1) * ofGetWidth() );
-            pov.z =  ( m.getArgAsFloat(2) * ofGetWidth() );
-            
-        } else if(m.getAddress() == "/cam/look"){
-            
-            look.x =  ( m.getArgAsFloat(0) * ofGetWidth()  * (-1) ); //Invert x posi for GL coordinate sys
-            look.y =  ( m.getArgAsFloat(1) * ofGetWidth() );
-            look.z =  ( m.getArgAsFloat(2) * ofGetWidth() );
-            
-        } else if(m.getAddress() == "/cam/on"){
-            
-            if ( m.getArgAsInt(0) == 1 )
-                cam_flg = true;
-            else if(m.getArgAsInt(0) == 0)
-                cam_flg = false;
-        
         } else {
             
             cout << "OSC :: unknown ADR :: " << m.getAddress() << endl;
@@ -225,26 +199,8 @@ void VSyn::initShapes(int max_num){
 void VSyn::draw(){
  
     ofSetColor(255, 255, 255);
-    
-    //CAM CONTROL
-    if(cam_flg){
-        
-        cam.begin();
-        cam.setPosition(pov);
-        cam.lookAt(look);
-        
-        //Invert Y axis for GL
-        ofPushMatrix();
-        ofScale(1, -1); //Invert Y only
-        
-    }
+//    circle(x, y, 0.2, 1);
 
-    //TEST
-//    ofRect(ofGetWidth()*0.5, ofGetHeight()*0.5, ofGetWidth()*0.1,ofGetWidth()*0.1);
-//    ofRect(ofGetWidth()*0.5, ofGetHeight()*0.2, ofGetWidth()*0.15,ofGetWidth()*0.15);
-
-    
-    
     for(int i=0; i<CONTAINER_MAX; i++){
         
         shapeContainer *elm = &shapes[i];
@@ -292,11 +248,6 @@ void VSyn::draw(){
         }
         
         
-    }
-    
-    if(cam_flg){
-        ofPopMatrix();
-        cam.end();
     }
     
 }

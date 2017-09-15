@@ -15,7 +15,6 @@
 #include "shape.h"
 #include "osc2shape.hpp"
 #include "drawer.hpp"
-#include "cam_func.hpp"
 
 #define PORT 57137
 #define NUM_MSG_STRINGS 20
@@ -35,13 +34,7 @@ class VSyn {
         int current_msg_string;
         string msg_strings[NUM_MSG_STRINGS];
         float timers[NUM_MSG_STRINGS];
-    
-        //CAMERA CONTROL
-        ofEasyCam cam;
-        bool cam_flg;
-        ofVec3f pov;
-        ofVec3f look;
-    
+        ofCamera cam;
     
     private:
         void initShapes(int max_num);
