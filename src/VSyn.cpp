@@ -150,10 +150,10 @@ void VSyn::update(){
             int uid = m.getArgAsInt32(0);
             if(uid < CONTAINER_MAX) // check the index is enable
             {
-                colors[uid].r = m.getArgAsFloat(1);
-                colors[uid].g = m.getArgAsFloat(2);
-                colors[uid].b = m.getArgAsFloat(3);
-                colors[uid].a = m.getArgAsFloat(4);
+                colors[uid].r = (char) ( 255.0f * m.getArgAsFloat(1) );
+                colors[uid].g = (char) ( 255.0f * m.getArgAsFloat(2) );
+                colors[uid].b = (char) ( 255.0f * m.getArgAsFloat(3) );
+                colors[uid].a = (char) ( 255.0f * m.getArgAsFloat(4) );
                 
             }
 
