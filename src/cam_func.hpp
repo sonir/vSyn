@@ -21,34 +21,34 @@
 
 #include "ofMain.h"
 
-ofVec3f initCamPosition (int w, int h);
-ofVec3f convertToPixels (ofVec3f org, int w, int h);
-
-
-ofVec3f initCamPosition (int w, int h){
-    
-    ofVec3f result;
-    
-    result.x = ( POV_INIT_X * w * (-1) );
-    result.y = POV_INIT_Y * h;
-    result.z = POV_INIT_Z * FIXED_Z;
-    
-    return result;
-    
-    
-}
-
-
-ofVec3f convertToPixels (ofVec3f org, int w, int h){
-    
-    ofVec3f result;
-    
-    result.x = ( org.x * w * (-1) );
-    result.y = org.y * h;
-    result.z = org.z * FIXED_Z;
-    
-    return result;
-    
-}
+//ofVec3f initCamPosition (int w, int h);
+//ofVec3f convertToPixels (ofVec3f org, int w, int h);
+//
+//
+//ofVec3f initCamPosition (int w, int h){
+//    
+//    ofVec3f result;
+//    
+//    result.x = ( POV_INIT_X * w * (-1) );
+//    result.y = POV_INIT_Y * h;
+//    result.z = POV_INIT_Z * FIXED_Z;
+//    
+//    return result;
+//    
+//    
+//}
+//
+//
+//ofVec3f convertToPixels (ofVec3f org, int w, int h){
+//    
+//    ofVec3f result;
+//    
+//    result.x = ( org.x * w * (-1) );
+//    result.y = org.y * h;
+//    result.z = org.z * FIXED_Z;
+//    
+//    return result;
+//    
+//}
 
 #endif /* cam_func_h */

@@ -17,8 +17,6 @@ void VSyn::setup(){
 
     //CAM SETUP
     cam_flg = false;
-//    pov.set(0, 0, 4000);
-//    look.set(0, 0, -1);
     pov.set(POV_INIT_X*ofGetWidth()*(-1), POV_INIT_Y*ofGetHeight(), POV_INIT_Z*ofGetWidth());
     look.set(LOOK_INIT_X*ofGetWidth()*(-1), LOOK_INIT_Y*ofGetHeight(), LOOK_INIT_Z*ofGetWidth());
     
@@ -27,7 +25,8 @@ void VSyn::setup(){
     receiver.setup(PORT);    
     current_msg_string = 0;
     
-    //Init Shapes
+    //Init Buffers for Graphics
+    initColors(CONTAINER_MAX);
     initShapes(CONTAINER_MAX);
 
 }
@@ -146,6 +145,18 @@ void VSyn::update(){
                 toWave(&shapes[uid] ,uid, x1, y1, x2, y2, freq, amp, phase, thick);
             }
             
+        } else if(m.getAddress() == "/color"){
+            
+            int uid = m.getArgAsInt32(0);
+            if(uid < CONTAINER_MAX) // check the index is enable
+            {
+                colors[uid].r = m.getArgAsFloat(1);
+                colors[uid].g = m.getArgAsFloat(2);
+                colors[uid].b = m.getArgAsFloat(3);
+                colors[uid].a = m.getArgAsFloat(4);
+                
+            }
+
         } else if(m.getAddress() == "/mute"){
             
             int uid =  m.getArgAsInt32(0);
@@ -192,6 +203,20 @@ void VSyn::update(){
 }
 
 
+void VSyn::initColors(int max_num){
+    
+    for(int i=0; i<max_num; i++){
+        
+        colors[i].r = 255;
+        colors[i].g = 255;
+        colors[i].b = 255;
+        
+        
+    }
+    
+}
+
+
 void VSyn::initShapes(int max_num){
 
     for(int i=0; i<max_num; i++){
@@ -224,8 +249,6 @@ void VSyn::initShapes(int max_num){
 
 void VSyn::draw(){
  
-    ofSetColor(255, 255, 255);
-    
     //CAM CONTROL
     if(cam_flg){
         
@@ -239,17 +262,15 @@ void VSyn::draw(){
         
     }
 
-    //TEST
-//    ofRect(ofGetWidth()*0.5, ofGetHeight()*0.5, ofGetWidth()*0.1,ofGetWidth()*0.1);
-//    ofRect(ofGetWidth()*0.5, ofGetHeight()*0.2, ofGetWidth()*0.15,ofGetWidth()*0.15);
 
     
     
     for(int i=0; i<CONTAINER_MAX; i++){
         
         shapeContainer *elm = &shapes[i];
-        
-        
+        //Set Color
+        ofSetColor(colors[i]);
+
         if ( !elm->active ){
             
             continue;

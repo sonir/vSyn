@@ -31,6 +31,7 @@ class VSyn {
         void draw();
     
         shapeContainer shapes[CONTAINER_MAX];
+        ofColor colors[CONTAINER_MAX];
         ofxOscReceiver receiver;
         int current_msg_string;
         string msg_strings[NUM_MSG_STRINGS];
@@ -45,6 +46,7 @@ class VSyn {
     
     private:
         void initShapes(int max_num);
+        void initColors(int max_num);
     
 };
 
