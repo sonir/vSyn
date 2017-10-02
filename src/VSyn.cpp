@@ -121,11 +121,12 @@ void VSyn::update(){
             float x2 = m.getArgAsFloat(3);
             float y2 = m.getArgAsFloat(4);
             float height = m.getArgAsFloat(5);
-            float thick = m.getArgAsFloat(6);
+            float expose = m.getArgAsFloat(6);
+            float thick = m.getArgAsFloat(7);
             
             if(uid < CONTAINER_MAX) // check the index is enable
             {
-                toArc(&shapes[uid] ,uid, x1, y1, x2, y2, height, thick);
+                toArc(&shapes[uid] ,uid, x1, y1, x2, y2, height, expose, thick);
             }
         } else if(m.getAddress() == "/wave"){
             
@@ -160,10 +161,12 @@ void VSyn::update(){
         } else if(m.getAddress() == "/mute"){
             
             int uid =  m.getArgAsInt32(0);
+            bool flg = (bool)m.getArgAsInt32(1);
+
             
             if(uid < CONTAINER_MAX) // check the index is enable
             {
-                toMute(&shapes[uid]);
+                toMute(&shapes[uid], flg);
             }
             
         } else if(m.getAddress() == "/cam/pov"){
@@ -210,6 +213,7 @@ void VSyn::initColors(int max_num){
         colors[i].r = 255;
         colors[i].g = 255;
         colors[i].b = 255;
+        colors[i].a = 255;
         
         
     }
@@ -222,7 +226,8 @@ void VSyn::initShapes(int max_num){
     for(int i=0; i<max_num; i++){
 
         shapeContainer *pC = &shapes[i];
-        pC->active = false;
+        pC->type = VOID;
+        pC->active = true;
         pC->uid = -1;
         
         pC->x1 = 0.5f;
@@ -237,6 +242,7 @@ void VSyn::initShapes(int max_num){
         pC->amp = 0.0f;
         pC->phase = 0.0f;
         pC->thick = 0.0f;
+        pC->expose = 1.0f;
         
         pC->fill = false;
 
@@ -271,7 +277,7 @@ void VSyn::draw(){
         //Set Color
         ofSetColor(colors[i]);
 
-        if ( !elm->active ){
+        if ( !elm->active || elm->type == VOID){
             
             continue;
             
@@ -300,7 +306,7 @@ void VSyn::draw(){
                 break;
 
             case ARC:
-                arc(elm->x1, elm->y1, elm->x2, elm->y2, elm->height, elm->thick);
+                arc(elm->x1, elm->y1, elm->x2, elm->y2, elm->height, elm->expose, elm->thick);
                 break;
 
             case WAVE:

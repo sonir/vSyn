@@ -8,11 +8,17 @@
 
 #include "drawer.hpp"
 
+int width;
+int height;
+
+void initWindowSize() {
+    width = ofGetWidth();
+    height = ofGetHeight();
+}
+
 
 void circle(float x, float y, float size, int fill) {
-    int width = ofGetWidth();
-    int height = ofGetHeight();
-    
+    //Fill Setting
     if(fill == 1) {
         ofFill();
     } else {
@@ -20,20 +26,19 @@ void circle(float x, float y, float size, int fill) {
         ofSetLineWidth(2.0);
     }
     
+    //Draw Circle
     int radius = size * width;
     ofDrawCircle(x * width, y * height, radius);
 }
 
 
 void triangle(float x, float y, float size, float angle, int fill) {
-    int width = ofGetWidth();
-    int height = ofGetHeight();
-    
     //Ready Variables
     ofVec2f center, normalizedTop, normalizedLeft, normalizedRight;
     double root3 = sqrt(3.0);
     float scaledSize = width * size;
     
+    //Culcrate each top
     center.set(x * width, y * height);
     normalizedTop.set(0, -root3 / 3);
     normalizedLeft.set(-0.5, root3 / 6);
@@ -51,7 +56,6 @@ void triangle(float x, float y, float size, float angle, int fill) {
         ofSetLineWidth(2.0);
     }
     
-    
     ofPushMatrix();
     ofTranslate(center);
     ofRotate(360 * angle);
@@ -62,10 +66,6 @@ void triangle(float x, float y, float size, float angle, int fill) {
 
 
 void square(float x, float y, float size, float angle, int fill) {
-    
-    int width = ofGetWidth();
-    int height = ofGetHeight();
-    
     //Fill Setting
     if(fill == 1) {
         ofFill();
@@ -84,9 +84,6 @@ void square(float x, float y, float size, float angle, int fill) {
 }
 
 void rect(float x1, float y1, float x2, float y2, float angle, int fill) {
-    int width = ofGetWidth();
-    int height = ofGetHeight();
-    
     //Fill Setting
     if(fill == 1) {
         ofFill();
@@ -111,45 +108,49 @@ void rect(float x1, float y1, float x2, float y2, float angle, int fill) {
 }
 
 void line(float x1, float y1, float x2, float y2, float thick) {
-    int width = ofGetWidth();
-    int height = ofGetHeight();
-    
     ofSetLineWidth(thick);
     ofDrawLine(width * x1, height * y1, width * x2, height * y2);
 }
 
-void arc(float x1, float y1, float x2, float y2, float arcHeight,  float thick) {
-    int width = ofGetWidth();
-    int height = ofGetHeight();
+void arc(float x1, float y1, float x2, float y2, float arcHeight, float expose, float thick) {
+    //Prepare for culculate
+    ofVec2f center = ofVec2f((x1 + x2) * 0.5, (y1 + y2) * 0.5);
+    float line_x = x2 - x1;
+    float line_y = y2 - y1;
     
-    //Get Line status
+    //Get control position
+    float control_x, control_y;
+    float normalizedLine = 1.0 / sqrt(line_x * line_x + line_y * line_y);
+    float ux = normalizedLine * line_x;
+    float uy = normalizedLine * line_y;
+    
+    control_x = center.x - arcHeight * uy;
+    
+    if (arcHeight < 0) {
+        control_y = center.y + abs(arcHeight * ux);
+    } else {
+        control_y = center.y - abs(arcHeight * ux);
+    }
+    
+    //Ready to start drawing
+    ofVec2f prevPoint = ofVec2f(x1 * width, y1 * height);
+    ofVec2f control = ofVec2f(control_x * width, control_y * height);
     ofVec2f start = ofVec2f(x1 * width, y1 * height);
     ofVec2f end = ofVec2f(x2 * width, y2 * height);
-    ofVec2f line = end - start;
     
-    int length = line.length();
-    float angle = line.getNormalized().angle(ofVec2f(1,0));
-    
-    //Draw
-    float division = 100.0;
+    //Draw Arc
     ofSetLineWidth(thick);
-    
-    ofVec2f currentPointOnLine = ofVec2f(0, 0);
-    ofVec2f currentPos = ofVec2f(0, 0);
-    ofVec2f previousPos = start;
-    
-    for (int i = 0; i < division; i++) {
-        currentPointOnLine = line * i / division + start;
-        currentPos = currentPointOnLine + line.getNormalized().rotate(-90) * sin(i/division * PI) * width * arcHeight;
-        ofDrawLine(previousPos, currentPos);
-        previousPos = currentPos;
+    int division = 128;
+    for (int i = 0; i <= division; i++) {
+        float t = expose * float(i) / division;
+        
+        ofVec2f tmpPoint = (1-t)*(1-t)*start + 2*(1-t)*t*control + t*t*end;
+        ofDrawLine(prevPoint, tmpPoint);
+        prevPoint = tmpPoint;
     }
 }
 
 void wave(float x1, float y1, float x2, float y2, float freq, float amplitude, float phase, float thick) {
-    int width = ofGetWidth();
-    int height = ofGetHeight();
-    
     //Culcurate Line status
     ofVec2f start = ofVec2f(x1 * width, y1 * height);
     ofVec2f end = ofVec2f(x2 * width, y2 * height);
@@ -166,7 +167,7 @@ void wave(float x1, float y1, float x2, float y2, float freq, float amplitude, f
     ofVec2f currentPos = ofVec2f(0, 0);
     ofVec2f previousPos = ofVec2f(0, 0);
     
-    for (int i = 0; i < division; i++) {
+    for (int i = 0; i <= division; i++) {
         if (i == 0) {
             currentPointOnLine = line * i / division + start;
             previousPos = currentPointOnLine + line.getNormalized().rotate(90) * sin((i/division * PI * 2 * freq) + (phase * 2 * PI)) * width * amplitude;

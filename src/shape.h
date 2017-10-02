@@ -9,7 +9,7 @@
 #ifndef shape_h
 #define shape_h
 
-typedef enum shape_type {CIRCLE, TRIANGLE, SQUARE, RECT, LINE, ARC, WAVE } shape_type;
+typedef enum shape_type {VOID, CIRCLE, TRIANGLE, SQUARE, RECT, LINE, ARC, WAVE } shape_type;
 
 typedef struct shapeContainer {
     
@@ -27,6 +27,7 @@ typedef struct shapeContainer {
     float freq;
     float amp;
     float phase;
+    float expose;
     float thick;
     bool fill;
     
