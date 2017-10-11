@@ -141,13 +141,15 @@ void arc(float x1, float y1, float x2, float y2, float arcHeight, float expose, 
     //Draw Arc
     ofSetLineWidth(thick);
     int division = 128;
-    for (int i = 0; i <= division; i++) {
-        float t = expose * float(i) / division;
-        
+    
+    float exposed = division * expose;
+    for (int i = 0; i <= exposed; i++) {
+        float t = float(i) / division;
         ofVec2f tmpPoint = (1-t)*(1-t)*start + 2*(1-t)*t*control + t*t*end;
         ofDrawLine(prevPoint, tmpPoint);
         prevPoint = tmpPoint;
     }
+    
 }
 
 void wave(float x1, float y1, float x2, float y2, float freq, float amplitude, float phase, float thick) {
@@ -159,7 +161,7 @@ void wave(float x1, float y1, float x2, float y2, float freq, float amplitude, f
     int length = line.length();
     float angle = line.getNormalized().angle(ofVec2f(1,0));
     
-    float division = 200.0;
+    float division = 1024.0;
     ofSetLineWidth(thick);
     
     //Draw
@@ -167,10 +169,11 @@ void wave(float x1, float y1, float x2, float y2, float freq, float amplitude, f
     ofVec2f currentPos = ofVec2f(0, 0);
     ofVec2f previousPos = ofVec2f(0, 0);
     
-    for (int i = 0; i <= division; i++) {
+    for (float i = 0; i <= division; i += 1.0) {
         if (i == 0) {
-            currentPointOnLine = line * i / division + start;
-            previousPos = currentPointOnLine + line.getNormalized().rotate(90) * sin((i/division * PI * 2 * freq) + (phase * 2 * PI)) * width * amplitude;
+            //currentPointOnLine = line * i / division + start;
+            currentPointOnLine = start;
+            previousPos = currentPointOnLine + line.getNormalized().rotate(90) * sin((i/division * PI * 2.0 * freq) + (phase * 2.0 * PI)) * width * amplitude;
         }
         currentPointOnLine = line * i / division + start;
         currentPos = currentPointOnLine + line.getNormalized().rotate(90) * sin((i/division * PI * 2 * freq) + (phase * 2 * PI)) * width * amplitude;
