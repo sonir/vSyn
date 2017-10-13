@@ -134,7 +134,8 @@ void toArc(shapeContainer *elm, int uid, float x1, float y1, float x2, float y2,
     elm->x1 = x1;
     elm->y1 = y1;
     elm->x2 = x2;
-    elm->y2 = y2;    
+    elm->y2 = y2;
+    elm->expose = expose;
     elm->height = height;
     elm->thick = thick;
     

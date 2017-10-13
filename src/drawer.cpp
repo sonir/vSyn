@@ -113,6 +113,8 @@ void line(float x1, float y1, float x2, float y2, float thick) {
 }
 
 void arc(float x1, float y1, float x2, float y2, float arcHeight, float expose, float thick) {
+    
+    
     //Prepare for culculate
     ofVec2f center = ofVec2f((x1 + x2) * 0.5, (y1 + y2) * 0.5);
     float line_x = x2 - x1;
