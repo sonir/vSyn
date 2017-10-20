@@ -11,9 +11,9 @@
 int width;
 int height;
 
-void initWindowSize() {
-    width = ofGetWidth();
-    height = ofGetHeight();
+void initCanvasSize(int w, int h) {
+    width = w;
+    height = h;
 }
 
 

@@ -6,7 +6,7 @@ void ofApp::setup(){
     ofSetEscapeQuitsApp(false);
     ofSetVerticalSync(true);
 //    ofEnableSmoothing();
-    initWindowSize();
+    vsyn.initWindowSize();
     vsyn.setup();
 }
 
@@ -78,7 +78,7 @@ void ofApp::mouseExited(int x, int y){
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
     
-    initWindowSize();
+    vsyn.initWindowSize();
 
 }
 

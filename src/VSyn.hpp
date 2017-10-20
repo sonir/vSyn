@@ -16,6 +16,7 @@
 #include "osc2shape.hpp"
 #include "drawer.hpp"
 #include "cam_func.hpp"
+#include "Particle.hpp"
 
 #define PORT 57139
 #define NUM_MSG_STRINGS 20
@@ -29,6 +30,7 @@ class VSyn {
         void setup();
         void update();
         void draw();
+        void initWindowSize();
     
         shapeContainer shapes[CONTAINER_MAX];
         ofColor colors[CONTAINER_MAX];
@@ -36,6 +38,8 @@ class VSyn {
         int current_msg_string;
         string msg_strings[NUM_MSG_STRINGS];
         float timers[NUM_MSG_STRINGS];
+        //Particle
+        Particle particle;
     
         //CAMERA CONTROL
         ofEasyCam cam;

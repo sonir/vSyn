@@ -10,7 +10,7 @@
 
 #include "ofMain.h"
 
-void initWindowSize();
+void initCanvasSize(int w, int h);
 void circle(float x, float y, float size, int fill);
 void triangle(float x, float y, float size, float angle, int fill);
 void square(float x, float y, float size, float angle, int fill);

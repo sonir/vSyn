@@ -19,6 +19,8 @@ void VSyn::setup(){
     cam_flg = false;
     pov.set(POV_INIT_X*ofGetWidth()*(-1), POV_INIT_Y*ofGetHeight(), POV_INIT_Z*ofGetWidth());
     look.set(LOOK_INIT_X*ofGetWidth()*(-1), LOOK_INIT_Y*ofGetHeight(), LOOK_INIT_Z*ofGetWidth());
+    //Setup Particles
+    particle.setup(ofGetWidth(),ofGetHeight());
     
     
     cout << "VSyn SETUP" << endl;
@@ -187,21 +189,58 @@ void VSyn::update(){
                 cam_flg = true;
             else if(m.getArgAsInt(0) == 0)
                 cam_flg = false;
-        
-        } else {
+            
+        }else if(m.getAddress() == "/particle/attractor/x"){
+            
+            particle.attractor_x = m.getArgAsFloat(0) * ofGetWidth();
+            
+        }else if(m.getAddress() == "/particle/attractor/y"){
+            
+            particle.attractor_y = m.getArgAsFloat(0) * ofGetHeight();
+            
+        }else if(m.getAddress() == "/particle/modulation"){
+            
+            particle.modulation = m.getArgAsFloat(0);
+            
+        }else if(m.getAddress() == "/particle/size"){
+            
+            particle.size = m.getArgAsFloat(0) * 2.5;
+            
+        }else if(m.getAddress() == "/particle/num"){
+            
+            particle.particleNum = m.getArgAsInt(0);
+            
+        }else if(m.getAddress() == "/particle/mode"){
+            
+            //particle.mode = m.getArgAsInt(0);
+            int flg =  m.getArgAsInt(0);
+            switch (flg){
+                    
+                case 0:
+                    particle.mode = BROWNIAN;
+                    break;
+                case 1:
+                    particle.mode = GRAVITY;
+                    break;
+                case 2:
+                    particle.mode = GATHERING;
+                    break;
+                    
+                    
+            }
+            
+        }else {
             
             cout << "OSC :: unknown ADR :: " << m.getAddress() << endl;
             
         }
         
         
-        
-        
-        
    
-    }
-    
+    }// end of while
 
+    
+    particle.update();
 
 }
 
@@ -254,7 +293,8 @@ void VSyn::initShapes(int max_num){
 
 
 void VSyn::draw(){
- 
+    
+    
     //CAM CONTROL
     if(cam_flg){
         
@@ -268,6 +308,9 @@ void VSyn::draw(){
         
     }
 
+
+    //drawing particle
+    particle.draw();
 
     
     
@@ -325,5 +368,18 @@ void VSyn::draw(){
         ofPopMatrix();
         cam.end();
     }
+    
+}
+
+
+void VSyn::initWindowSize(){
+    
+    int tmp_w = ofGetWidth();
+    int tmp_h = ofGetHeight();
+    
+    initCanvasSize(tmp_w, tmp_h);
+    particle.screen_width = tmp_w;
+    particle.screen_height = tmp_h;
+    
     
 }
